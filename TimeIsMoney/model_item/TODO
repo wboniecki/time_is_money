@@ -1,0 +1,22 @@
+Item
+
+Model:
+-musi posiadać itemID
+-musi posiadać name
+-musi posiadać sellPrice (do vendora)
+-musi posiadać icon, img thumbnail najlepiej zachować na serwerze w 3 rozmiarach
+example:
+itemId: 76138
+icon: inv_misc_gem_x4_rare_uncut_blue
+linki:
+
+18: http://media.blizzard.com/wow/icons/18/inv_misc_gem_x4_rare_uncut_blue.jpg
+36: http://media.blizzard.com/wow/icons/36/inv_misc_gem_x4_rare_uncut_blue.jpg
+56: http://media.blizzard.com/wow/icons/56/inv_misc_gem_x4_rare_uncut_blue.jpg
+
+
+opcjonalnie może zawierać:
+quality
+itemClass
+itemSubClass
+inventoryType
