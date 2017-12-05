@@ -102,7 +102,7 @@ class AuctionAPIUpdater(UpdaterInterface):
                                             #     updated += 1
                                         else:
                                             # Insert new one
-                                            if auction_service.crate(auction):
+                                            if auction_service.create(auction):
                                                 created += 1
                                             else:
                                                 # Error when inserting new auction - not valid

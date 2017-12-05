@@ -17,7 +17,9 @@ class RealmService:
             'slug': json_data['slug'],
             'status': json_data['status'],
             'population': json_data['population'],
-            'connected_realm': connected_realm_id
+            'connected_realm': connected_realm_id,
+            'dateModified': datetime.datetime.now(),
+            'dateChecked': datetime.date.today()
         }
 
         serializer = RealmSerializer(data=data)
@@ -63,6 +65,13 @@ class RealmService:
         if realm:
             return realm.connected_realm
         return None
+
+    def getRealmNamesByConnectedRealmId(self, _id):
+        realm_names = []
+        realms = Realm.objects.filter(connected_realm=_id)
+        for realm in realms:
+            realm_names.append(realm.name)
+        return realm_names
 
     def isRealmExist(self, realm_name):
         return Realm.objects.filter(name=realm_name).first()

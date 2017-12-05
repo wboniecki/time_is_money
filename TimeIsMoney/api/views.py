@@ -11,6 +11,7 @@ from .serializers import RealmSerializer
 from db_updater.src.service_manager import createOrUpdateRealms, updateConnectedRealm
 from db_updater.src.service_manager import createAllAuctions, updateAllAuctions
 from db_updater.src.service_manager import createOrUpdateItems
+from model_tsd.calculation import Calculation
 import logging
 
 
@@ -29,9 +30,12 @@ def realm_list(request, format=None):
     if request.method == 'GET':
         realms = Realm.objects.all()
         serializer = RealmSerializer(realms, many=True)
-
+        # TEST PURPOSES ONLY
+        #print(utils.unifyPrice("0"))
+        calc = Calculation()
+        calc.calc(114821, "Doomhammer")
         #createOrUpdateItems('eu')
-        updateAllAuctions('eu')
+        #updateAllAuctions('eu')
         #createAllAuctions('eu')
         #updateConnectedRealm('eu')
         #createOrUpdateRealms('eu')

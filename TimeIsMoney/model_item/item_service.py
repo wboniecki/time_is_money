@@ -1,7 +1,12 @@
+from utils.utils import Utils
 from .models import Item
 
 
 class ItemService:
+    def getItemDBId(self, _itemId):
+        item = Item.objects.filter(itemId=_itemId).first()
+        return item.id
+
     def getItemList(self):
         items = Item.objects.all()
         item_list = []
@@ -10,6 +15,12 @@ class ItemService:
             item_list.append(item.itemId)
 
         return item_list
+
+    def getItemSellPrice(self, _itemId):
+        item = Item.objects.filter(itemId=_itemId).first()
+        if item:
+            return Utils.unifyPrice(item.sellPrice)
+        return None
 
     def insert(self, json_data):
         if 'id' in json_data:
