@@ -16,6 +16,14 @@ class AuctionService:
     def isNotEmpty(self):
         return Auction.objects.all().first()
 
+    def deleteOldAuctions(self):
+        deleted = 0
+        old_auctions = Auction.objects.filter(isActive=0)
+        for each in old_auctions:
+            each.delete()
+            deleted += 1
+        return deleted
+
     def getActiveAuctions(self, connected_realms):
         current_auctions = []
         current_auctions_auc = {}

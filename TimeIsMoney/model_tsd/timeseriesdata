@@ -1,0 +1,15 @@
+hourly
+~20000 items
+123 connected realms
+
+20000 * 123 = 2460000
+
+2460000 * 24 snapshot per day = 59040000 records per day
+
+59040000 * 365 = 21549600000 records per year
+
+bigint id 9 223 372 036 854 775 807/21549600000 = 428006646 years
+
+daily
+2460000 * 356 = 875760000 records per year
+bigint id 9 223 372 036 854 775 807/875760000 = 10531848950 years

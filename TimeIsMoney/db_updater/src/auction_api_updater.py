@@ -178,3 +178,10 @@ class AuctionAPIUpdater(UpdaterInterface):
             log.error(label['@DBU7'] % url)
             log.error(e)
         return data
+
+    def deleteOldAuctions(self):
+        log.debug(label['@DBU34'])
+        auction_service = AuctionService()
+        log.debug(label['@DBU35'] % 'Auctions')
+        deleted = auction_service.deleteOldAuctions()
+        log.info(label['@DBU36'] % (str(deleted), 'Auctions'))

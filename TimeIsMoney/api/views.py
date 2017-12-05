@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from model_realm.models import Realm
 from .serializers import RealmSerializer
 
-from db_updater.src.service_manager import createOrUpdateRealms, updateConnectedRealm
-from db_updater.src.service_manager import createAllAuctions, updateAllAuctions
+from db_updater.src.service_manager import createOrUpdateRealms
+from db_updater.src.service_manager import updateAllAuctions, deleteOldAuctions
 from db_updater.src.service_manager import createOrUpdateItems
 from model_tsd.calculation import Calculation
 import logging
@@ -33,7 +33,8 @@ def realm_list(request, format=None):
         # TEST PURPOSES ONLY
         #print(utils.unifyPrice("0"))
         calc = Calculation()
-        calc.calc(114821, "Doomhammer")
+        #calc.calc(114821, "Doomhammer")
+        deleteOldAuctions('eu')
         #createOrUpdateItems('eu')
         #updateAllAuctions('eu')
         #createAllAuctions('eu')

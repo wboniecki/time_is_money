@@ -5,20 +5,11 @@ from db_updater.src.item_api_updater import ItemAPIUpdater
 def createOrUpdateRealms(region):
     RealmAPIUpdater(region).main()
 
-def updateConnectedRealm(region):
-    RealmAPIUpdater(region).main()
-
-def createAllAuctions(region):
-    #AuctionService(region).create()
-    AuctionAPIUpdater(region).main()
+def deleteOldAuctions(region):
+    AuctionAPIUpdater(region).deleteOldAuctions()
 
 def updateAllAuctions(region):
     AuctionAPIUpdater(region).main()
-    #AuctionService(region).update()
 
-# TODO: test purpose
 def createOrUpdateItems(region):
     ItemAPIUpdater(region).main()
-
-# def insertItem(region, itemId):
-#     return ItemService(region).insert(itemId)
