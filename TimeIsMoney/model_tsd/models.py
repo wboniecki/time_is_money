@@ -38,7 +38,7 @@ class ItemRealmTimeSeriesDataDaily(models.Model):
 
 class ItemRealmTimeSeriesDataHourly(models.Model):
     id = models.BigAutoField(primary_key=True)
-    datetime = models.DateTimeField(auto_now=False, auto_now_add=True)
+    datetime = models.DateTimeField(auto_now=False, auto_now_add=False) # Add datetime manually because differences in timezone
     item = models.ForeignKey('model_item.Item', on_delete=models.CASCADE)
     connected_realm = models.ForeignKey('model_realm.ConnectedRealm', on_delete=models.CASCADE)
     # market price

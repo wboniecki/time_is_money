@@ -1,6 +1,5 @@
 import datetime
 from ..models import Realm
-from django.db.models import ObjectDoesNotExist
 from ..serializer import RealmSerializer
 
 
@@ -46,6 +45,15 @@ class RealmService:
             return True
 
         return False
+
+    def getActiveRealmsConnectedRealmId(self):
+        records = Realm.objects.filter(isActive=1)
+        connected_realm_id_tab = []
+        if records:
+            for record in records:
+                if record.connected_realm.id not in connected_realm_id_tab:
+                    connected_realm_id_tab.append(record.connected_realm.id)
+        return connected_realm_id_tab
 
     def getRealmByIsActive(self, is_active):
         records = Realm.objects.filter(isActive=is_active)
