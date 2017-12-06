@@ -17,3 +17,6 @@ def createOrUpdateItems(region):
 
 def tsdUpdater():
     TsdAPIUpdater().main()
+
+def tsdDeleteOld():
+    TsdAPIUpdater().deleteOldTSD()
