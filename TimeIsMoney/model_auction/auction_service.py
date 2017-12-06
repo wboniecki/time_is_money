@@ -1,6 +1,7 @@
 from .models import Auction
 from .serializer import AuctionSerializer
 from utils.utils import Utils
+from django.db import connection
 
 class AuctionService:
 
@@ -17,12 +18,8 @@ class AuctionService:
         return Auction.objects.all().first()
 
     def deleteOldAuctions(self):
-        deleted = 0
-        old_auctions = Auction.objects.filter(isActive=0)
-        for each in old_auctions:
-            each.delete()
-            deleted += 1
-        return deleted
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM %s WHERE `isActive`=0" % Auction._meta.db_table)
 
     def getActiveAuctions(self, connected_realms):
         current_auctions = []

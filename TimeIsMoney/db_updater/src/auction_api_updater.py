@@ -183,5 +183,5 @@ class AuctionAPIUpdater(UpdaterInterface):
         log.debug(label['@DBU34'])
         auction_service = AuctionService()
         log.debug(label['@DBU35'] % 'Auctions')
-        deleted = auction_service.deleteOldAuctions()
-        log.info(label['@DBU36'] % (str(deleted), 'Auctions'))
+        auction_service.deleteOldAuctions()
+        log.info(label['@DBU36'] % 'Auctions')
