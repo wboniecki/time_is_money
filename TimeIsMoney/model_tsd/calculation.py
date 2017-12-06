@@ -79,5 +79,4 @@ class Calculation:
             "max_price": max_itemprice,
             "avg_price": self.calcAvgPrice(item_pricelist)
         }
-        print(calculations)
         return calculations

@@ -19,6 +19,9 @@ class ConnectedRealmService:
     def getIdByRealms(self, realms):
         return ConnectedRealm.objects.filter(realms=realms).first().id
 
+    def getConnectedRealm(self, _id):
+        return ConnectedRealm.objects.filter(id=_id).first()
+
     def getRealmsById(self, _id):
         return ConnectedRealm.objects.filter(id=_id).first().realms
 

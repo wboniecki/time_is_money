@@ -12,7 +12,9 @@ from db_updater.src.service_manager import createOrUpdateRealms
 from db_updater.src.service_manager import updateAllAuctions, deleteOldAuctions, tsdUpdater
 from db_updater.src.service_manager import createOrUpdateItems
 from model_tsd.calculation import Calculation
+from model_tsd.services.tsd_hourly_service import TSDHourlyService
 import logging
+import datetime
 
 
 class RealmListAPIView(ListAPIView):
@@ -33,9 +35,11 @@ def realm_list(request, format=None):
         # TEST PURPOSES ONLY
         #print(utils.unifyPrice("0"))
         calc = Calculation()
+        tsdh = TSDHourlyService()
         #calc.calc(114821, "Doomhammer")
         #deleteOldAuctions('eu')
         tsdUpdater()
+        #tsdh.getGetRealmDailyAvgMarketPrice(2, 68, datetime.date.today())
         #createOrUpdateItems('eu')
         #updateAllAuctions('eu')
         #createAllAuctions('eu')

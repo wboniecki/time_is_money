@@ -3,9 +3,12 @@ from .models import Item
 
 
 class ItemService:
-    def getItemDBId(self, _itemId):
+
+    def getItemByItemId(self, _itemId):
         item = Item.objects.filter(itemId=_itemId).first()
-        return item.id
+        if item:
+            return item
+        return False
 
     def getItemList(self):
         items = Item.objects.all()
@@ -16,11 +19,8 @@ class ItemService:
 
         return item_list
 
-    def getItemSellPrice(self, _itemId):
-        item = Item.objects.filter(itemId=_itemId).first()
-        if item:
-            return Utils.unifyPrice(item.sellPrice)
-        return None
+    def getAllItems(self):
+        return Item.objects.all()
 
     def insert(self, json_data):
         if 'id' in json_data:
