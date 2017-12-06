@@ -1,6 +1,5 @@
 import datetime
 from ..models import Realm
-from django.db.models import ObjectDoesNotExist
 from ..serializer import RealmSerializer
 
 
@@ -17,7 +16,9 @@ class RealmService:
             'slug': json_data['slug'],
             'status': json_data['status'],
             'population': json_data['population'],
-            'connected_realm': connected_realm_id
+            'connected_realm': connected_realm_id,
+            'dateModified': datetime.datetime.now(),
+            'dateChecked': datetime.date.today()
         }
 
         serializer = RealmSerializer(data=data)
@@ -45,6 +46,15 @@ class RealmService:
 
         return False
 
+    def getActiveRealmsConnectedRealmId(self):
+        records = Realm.objects.filter(isActive=1)
+        connected_realm_id_tab = []
+        if records:
+            for record in records:
+                if record.connected_realm.id not in connected_realm_id_tab:
+                    connected_realm_id_tab.append(record.connected_realm.id)
+        return connected_realm_id_tab
+
     def getRealmByIsActive(self, is_active):
         records = Realm.objects.filter(isActive=is_active)
         realm_table = {}
@@ -63,6 +73,13 @@ class RealmService:
         if realm:
             return realm.connected_realm
         return None
+
+    def getRealmNamesByConnectedRealmId(self, _id):
+        realm_names = []
+        realms = Realm.objects.filter(connected_realm=_id)
+        for realm in realms:
+            realm_names.append(realm.name)
+        return realm_names
 
     def isRealmExist(self, realm_name):
         return Realm.objects.filter(name=realm_name).first()

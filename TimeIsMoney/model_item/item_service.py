@@ -1,7 +1,15 @@
+from utils.utils import Utils
 from .models import Item
 
 
 class ItemService:
+
+    def getItemByItemId(self, _itemId):
+        item = Item.objects.filter(itemId=_itemId).first()
+        if item:
+            return item
+        return False
+
     def getItemList(self):
         items = Item.objects.all()
         item_list = []
@@ -10,6 +18,9 @@ class ItemService:
             item_list.append(item.itemId)
 
         return item_list
+
+    def getAllItems(self):
+        return Item.objects.all()
 
     def insert(self, json_data):
         if 'id' in json_data:

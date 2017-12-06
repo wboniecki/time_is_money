@@ -33,5 +33,10 @@ DBU = {
     '@DBU30': 'Update %s: %s',
     '@DBU31': 'Deprecate %s: %s',
     '@DBU32': '%s: There was an error during unactive',
-    '@DBU33': '%s: Total: %s, New: %s, Deprecated: %s'
+    '@DBU33': '%s: Total: %s, New: %s, Deprecated: %s',
+    '@DBU34': 'DELETE DEPRECATED AUCTIONS FROM DATABASE.',
+    '@DBU35': 'Delete old %s in progress',
+    '@DBU36': 'Deleted %s old %s',
+    '@DBU37': 'DELETE DEPRECATED HOURLY TSD FROM DATABASE.',
+    '@DBU38': '[%s] Inserted: %s'
 }

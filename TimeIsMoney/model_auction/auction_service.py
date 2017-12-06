@@ -1,9 +1,10 @@
 from .models import Auction
 from .serializer import AuctionSerializer
+from utils.utils import Utils
 
 class AuctionService:
 
-    def crate(self, auction):
+    def create(self, auction):
         serializer = AuctionSerializer(data=auction)
 
         if serializer.is_valid():
@@ -14,6 +15,14 @@ class AuctionService:
 
     def isNotEmpty(self):
         return Auction.objects.all().first()
+
+    def deleteOldAuctions(self):
+        deleted = 0
+        old_auctions = Auction.objects.filter(isActive=0)
+        for each in old_auctions:
+            each.delete()
+            deleted += 1
+        return deleted
 
     def getActiveAuctions(self, connected_realms):
         current_auctions = []
@@ -26,6 +35,17 @@ class AuctionService:
             counter += 1
             current_auctions_auc[current_auction.auc] = current_auction
         return current_auctions_auc
+
+    def getRealmPriceList(self, _itemId, _realm_name):
+        price_tab = []
+        current_auctions = Auction.objects.filter(ownerRealm=_realm_name, isActive=1, item=_itemId)
+        for current_auction in current_auctions:
+            quantity = current_auction.quantity
+            price = Utils.unifyPrice(current_auction.buyout)/quantity
+            while quantity > 0:
+                price_tab.append(price)
+                quantity -= 1
+        return price_tab
 
     def getCurrentAuctions(self, connected_realms):
         current_auctions = []

@@ -102,7 +102,7 @@ class AuctionAPIUpdater(UpdaterInterface):
                                             #     updated += 1
                                         else:
                                             # Insert new one
-                                            if auction_service.crate(auction):
+                                            if auction_service.create(auction):
                                                 created += 1
                                             else:
                                                 # Error when inserting new auction - not valid
@@ -178,3 +178,10 @@ class AuctionAPIUpdater(UpdaterInterface):
             log.error(label['@DBU7'] % url)
             log.error(e)
         return data
+
+    def deleteOldAuctions(self):
+        log.debug(label['@DBU34'])
+        auction_service = AuctionService()
+        log.debug(label['@DBU35'] % 'Auctions')
+        deleted = auction_service.deleteOldAuctions()
+        log.info(label['@DBU36'] % (str(deleted), 'Auctions'))
