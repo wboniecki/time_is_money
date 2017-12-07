@@ -6,7 +6,9 @@ from model_realm.services.realm_service import RealmService
 class Calculation:
 
     def calcAvgPrice(self, _set):
-        return round(sum(_set)/len(_set), 4)
+        if len(_set) > 0:
+            return round(sum(_set)/len(_set), 4)
+        return 0
 
     def calcStandardDeviation(self, _set):
         avg = self.calcAvgPrice(_set)
