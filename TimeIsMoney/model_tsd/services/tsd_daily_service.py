@@ -47,7 +47,8 @@ class TSDDailyService:
         #if tsd.last_hourly is None:
         tsd.last_hourly = _last_hourly
 
-        tsd.save()
+        #tsd.save()
+        return tsd
 
     def _getTSDDaily(self, _date, _dbitem_id, _connected_realm_id):
         tsd = ItemRealmTimeSeriesDataDaily.objects.filter(date=_date, item=_dbitem_id, connected_realm=_connected_realm_id).first()

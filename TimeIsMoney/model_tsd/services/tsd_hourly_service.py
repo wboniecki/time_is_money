@@ -12,7 +12,7 @@ class TSDHourlyService:
         tsd_hourly.avg_price = _data['avg_price']
         tsd_hourly.quantity = _data['quantity']
         tsd_hourly.standard_deviation = _data['standard_deviation']
-        tsd_hourly.save()
+        #tsd_hourly.save()
         return tsd_hourly
 
     def deleteOldTSD(self):
