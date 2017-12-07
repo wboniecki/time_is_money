@@ -33,52 +33,62 @@ class Calculation:
         item_pricelist = []
         for realm in realms:
             item_pricelist += auction_service.getRealmPriceList(_itemId, realm)
-        item_pricelist = sorted(item_pricelist)
-        standard_deviation = self.calcStandardDeviation(item_pricelist)
-        # Get vendor sell price continue if is not None (item exist statement)
-        max_set_len = int(len(item_pricelist)*0.3)
-        need_set = []
-        counter = 0
-        prev_price = 0
-        # For each price in item_pricelist
-        for price in item_pricelist:
-            # Up to max_set_len (30% of item_pircelist)
-            if counter <= max_set_len:
-                # Proceed only for price higher than vendor item sell price
-                if price > _item_sell_price:
-                    # For first valid price set prev_price equal price
-                    if counter == 0:
-                        prev_price = price
-                    # Grab all prices below or equal first half of max_set_len
-                    if counter <= int(max_set_len/2):
-                        # First half of set (15%)
-                        need_set.append(price)
-                        prev_price = price
-                        counter += 1
-                    else:
-                        # Second half of set (max 30%)
-                        if prev_price + 0.2 * price <= price:
-                            # If price is higher than 20% of prev price break
-                            break
-                        need_set.append(price)
-                        prev_price = price
-                        counter += 1
-            else:
-                break
+        if len(item_pricelist) > 0:
+            item_pricelist = sorted(item_pricelist)
+            standard_deviation = self.calcStandardDeviation(item_pricelist)
+            # Get vendor sell price continue if is not None (item exist statement)
+            max_set_len = int(len(item_pricelist)*0.3)
+            need_set = []
+            counter = 0
+            prev_price = 0
+            # For each price in item_pricelist
+            for price in item_pricelist:
+                # Up to max_set_len (30% of item_pircelist)
+                if counter <= max_set_len:
+                    # Proceed only for price higher than vendor item sell price
+                    if price > _item_sell_price:
+                        # For first valid price set prev_price equal price
+                        if counter == 0:
+                            prev_price = price
+                        # Grab all prices below or equal first half of max_set_len
+                        if counter <= int(max_set_len/2):
+                            # First half of set (15%)
+                            need_set.append(price)
+                            prev_price = price
+                            counter += 1
+                        else:
+                            # Second half of set (max 30%)
+                            if prev_price + 0.2 * price <= price:
+                                # If price is higher than 20% of prev price break
+                                break
+                            need_set.append(price)
+                            prev_price = price
+                            counter += 1
+                else:
+                    break
 
-        min_itemprice = item_pricelist[0]
-        max_itemprice = item_pricelist[len(item_pricelist)-1]
-        avg = self.calcAvgPrice(need_set)
-        mp_standard_deviation = self.calcStandardDeviation(need_set)
-        max_price = round(avg+mp_standard_deviation, 4)
-        min_price = round(avg-mp_standard_deviation, 4)
-        market_price = self.calcMarketPrice(need_set, min_price, max_price)
-        calculations = {
-            "market_price": market_price,
-            "standard_deviation": standard_deviation,
-            "quantity": len(item_pricelist),
-            "min_price": min_itemprice,
-            "max_price": max_itemprice,
-            "avg_price": self.calcAvgPrice(item_pricelist)
-        }
+            min_itemprice = item_pricelist[0]
+            max_itemprice = item_pricelist[len(item_pricelist)-1]
+            avg = self.calcAvgPrice(need_set)
+            mp_standard_deviation = self.calcStandardDeviation(need_set)
+            max_price = round(avg+mp_standard_deviation, 4)
+            min_price = round(avg-mp_standard_deviation, 4)
+            market_price = self.calcMarketPrice(need_set, min_price, max_price)
+            calculations = {
+                "market_price": market_price,
+                "standard_deviation": standard_deviation,
+                "quantity": len(item_pricelist),
+                "min_price": min_itemprice,
+                "max_price": max_itemprice,
+                "avg_price": self.calcAvgPrice(item_pricelist)
+            }
+        else:
+            calculations = {
+                "market_price": 0,
+                "standard_deviation": 0,
+                "quantity": 0,
+                "min_price": 0,
+                "max_price": 0,
+                "avg_price": 0
+            }
         return calculations
