@@ -6,7 +6,7 @@ class ItemRealmTimeSeriesDataDaily(models.Model):
     date = models.DateField(auto_now=False, auto_now_add=False)
     item = models.ForeignKey('model_item.Item', on_delete=models.CASCADE)
     connected_realm = models.ForeignKey('model_realm.ConnectedRealm', on_delete=models.CASCADE)
-    last_hourly = models.ForeignKey('ItemRealmTimeSeriesDataHourly')
+    #last_hourly = models.ForeignKey('ItemRealmTimeSeriesDataHourly')
     # min market price
     min_market_price = models.DecimalField(max_digits=13, decimal_places=4, default=0)
     # max market price

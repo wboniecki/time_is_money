@@ -43,7 +43,7 @@ class TsdAPIUpdater:
                 calc = calculation.calc(item.itemId, item_vendor_sellprice, connected_realms_id)
                 tsd_hourly = tsd_hourly_service.create(item, connected_realm, calc)
                 tsd_hourly_objects.append(tsd_hourly)
-                tsd_daily_objects.append(tsd_daily_service.createOrUpdate(item, connected_realm, tsd_hourly, calc))
+                tsd_daily_objects.append(tsd_daily_service.createOrUpdate(item, connected_realm, calc))
                 if counter > 1000:
                     counter = 0
                     self.commit_tsd_objects(tsd_hourly_objects)
@@ -52,6 +52,8 @@ class TsdAPIUpdater:
                     tsd_daily_objects = []
                 counter += 1
                 total += 1
+        self.commit_tsd_objects(tsd_hourly_objects)
+        self.commit_tsd_objects(tsd_daily_objects)
         log.debug(label['@DBU38'] % ('TSD HOURLY', str(counter)))
         log.debug(label['@DBU2'])
 

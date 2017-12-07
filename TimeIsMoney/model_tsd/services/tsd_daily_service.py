@@ -5,7 +5,7 @@ from model_item.item_service import ItemService
 from model_realm.services import RealmService
 
 class TSDDailyService:
-    def createOrUpdate(self, _item, _connected_realm, _last_hourly, _data):
+    def createOrUpdate(self, _item, _connected_realm, _data):
         today = datetime.date.today()
         tsd_hourly_service = TSDHourlyService()
         avg_market_price_sum = 0
@@ -26,12 +26,22 @@ class TSDDailyService:
             tsd.min_market_price = _data['market_price']
         if tsd.max_market_price < _data['market_price']:
             tsd.max_market_price = _data['market_price']
-        tsd.avg_market_price = round(avg_market_price_sum/len(tsd_hourly_set), 4)
+
+        if len(tsd_hourly_set) > 0:
+            tsd.avg_market_price = round(avg_market_price_sum/len(tsd_hourly_set), 4)
+        else:
+            tsd.avg_market_price = _data['market_price']
+
         if not tsd.min_price or tsd.min_price > _data['min_price']:
             tsd.min_price = _data['min_price']
         if tsd.max_price < _data['max_price']:
             tsd.max_price = _data['max_price']
-        tsd.avg_price = round(avg_price_sum/len(tsd_hourly_set), 4)
+
+        if len(tsd_hourly_set) > 0:
+            tsd.avg_price = round(avg_price_sum/len(tsd_hourly_set), 4)
+        else:
+            tsd.avg_price = _data['avg_price']
+
         if not tsd.open_market_price:
             tsd.open_market_price = _data['market_price']
         tsd.end_market_price = _data['market_price']
@@ -39,13 +49,18 @@ class TSDDailyService:
             tsd.min_quantity = _data['quantity']
         if tsd.max_quantity < _data['quantity']:
             tsd.max_quantity = _data['quantity']
-        tsd.avg_quantity = round(avg_quantity_sum/len(tsd_hourly_set), 4)
+
+        if len(tsd_hourly_set) > 0:
+            tsd.avg_quantity = round(avg_quantity_sum/len(tsd_hourly_set), 4)
+        else:
+            tsd.avg_quantity = _data['quantity']
+
         #if tsd.connected_realm is None:
         tsd.connected_realm = _connected_realm
         #if tsd.item is None:
         tsd.item = _item
         #if tsd.last_hourly is None:
-        tsd.last_hourly = _last_hourly
+        #tsd.last_hourly = _last_hourly
 
         #tsd.save()
         return tsd
