@@ -39,9 +39,11 @@ class AuctionService:
         for current_auction in current_auctions:
             quantity = current_auction.quantity
             price = Utils.unifyPrice(current_auction.buyout)/quantity
-            while quantity > 0:
-                price_tab.append(price)
-                quantity -= 1
+            # If price == 0 then auction is only for bid
+            if price > 0:
+                while quantity > 0:
+                    price_tab.append(price)
+                    quantity -= 1
         return price_tab
 
     def getCurrentAuctions(self, connected_realms):
