@@ -32,11 +32,11 @@ class TsdAPIUpdater:
         connected_realms_tab = realm_service.getActiveRealmsConnectedRealmId()
         # Get itemId price list map
         item_list = item_service.getAllItems()
-        counter = 0
         total = 0
         tsd_hourly_objects = []
         tsd_daily_objects = []
         for connected_realms_id in connected_realms_tab:
+            counter = 0
             log.debug(label['@DBU39'] % str(connected_realms_id))
             for item in item_list:
                 item_vendor_sellprice = Utils.unifyPrice(item.sellPrice)
@@ -53,6 +53,7 @@ class TsdAPIUpdater:
                     tsd_daily_objects = []
                 counter += 1
                 total += 1
+                log.debug("[%s]: %s" % (str(connected_realms_id), str(total)))
             self.commit_tsd_objects(tsd_hourly_objects)
             self.commit_tsd_objects(tsd_daily_objects)
             log.debug(label['@DBU40'] % str(connected_realms_id))
