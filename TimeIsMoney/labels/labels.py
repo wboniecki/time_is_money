@@ -38,5 +38,8 @@ DBU = {
     '@DBU35': 'Delete old %s in progress',
     '@DBU36': 'Deleted old %s',
     '@DBU37': 'DELETE DEPRECATED HOURLY TSD FROM DATABASE.',
-    '@DBU38': '[%s] Inserted: %s'
+    '@DBU38': '[%s] Inserted: %s',
+    '@DBU39': 'Begin inserting TSD for %s',
+    '@DBU40': 'End inserting TSD for %s'
+
 }
