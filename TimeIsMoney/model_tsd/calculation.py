@@ -86,10 +86,9 @@ class Calculation:
             mp_standard_deviation = self.calcStandardDeviation(need_set)
             max_price = round(avg+mp_standard_deviation, 4)
             min_price = round(avg-mp_standard_deviation, 4)
-            if min_price == max_price:
+            market_price = self.calcMarketPrice(need_set, min_price, max_price)
+            if avg > 0 and market_price == 0:
                 market_price = avg
-            else:
-                market_price = self.calcMarketPrice(need_set, min_price, max_price)
             calculations = {
                 "market_price": market_price,
                 "standard_deviation": standard_deviation,
