@@ -60,7 +60,7 @@ class TsdAPIUpdater:
                         tsd_daily_objects = []
                     counter += 1
                     total += 1
-                    log.debug("[%s]: %s" % (str(connected_realms_id), str(total)))
+                    #log.debug("[%s]: %s" % (str(connected_realms_id), str(total)))
                 self.commit_tsd_objects(tsd_hourly_objects)
                 self.commit_tsd_objects(tsd_daily_objects)
             log.debug(label['@DBU40'] % str(connected_realms_id))
