@@ -1,3 +1,8 @@
+'''
+wboniecki 2017-11-12
+Auction service class for updater, contains methods for update Auction (Eu or Us) table in database.
+Implements UpdaterInterface class.
+'''
 import logging, urllib.error, datetime
 from labels import labels
 from db_updater.src.updater_interface import UpdaterInterface

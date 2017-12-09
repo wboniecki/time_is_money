@@ -9,7 +9,7 @@ from django_mysql.models.fields import JSONField
 from django.db.models.signals import pre_save
 
 class Realm(models.Model):
-    # TODO: Nowy podział na us i eu, usuwa region
+    # Region is only for information purpose
     regions = (
         ('eu', 'eu'),
         ('us', 'us'),
