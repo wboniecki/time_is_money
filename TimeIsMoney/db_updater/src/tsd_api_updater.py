@@ -64,7 +64,7 @@ class TsdAPIUpdater:
                 self.commit_tsd_objects(tsd_hourly_objects)
                 self.commit_tsd_objects(tsd_daily_objects)
             log.debug(label['@DBU40'] % str(connected_realms_id))
-        log.debug(label['@DBU38'] % ('TSD HOURLY', str(counter)))
+        log.debug(label['@DBU38'] % ('TSD HOURLY', str(total)))
         log.debug(label['@DBU2'])
 
 

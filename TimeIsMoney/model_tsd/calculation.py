@@ -89,6 +89,8 @@ class Calculation:
             market_price = self.calcMarketPrice(need_set, min_price, max_price)
             if avg > 0 and market_price == 0:
                 market_price = avg
+            if avg == 0:
+                market_price = _item_sell_price
             calculations = {
                 "market_price": market_price,
                 "standard_deviation": standard_deviation,
