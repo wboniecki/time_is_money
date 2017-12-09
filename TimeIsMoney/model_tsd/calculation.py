@@ -1,9 +1,14 @@
-import math
+import math, datetime
 from model_auction.auction_service import AuctionService
 from model_realm.services.realm_service import RealmService
+from utils.utils import Utils
 
 
 class Calculation:
+
+    def __init__(self, _auctions):
+        self.auctions = _auctions
+        self.time = datetime.datetime.now()
 
     def calcAvgPrice(self, _set):
         if len(_set) > 0:
@@ -26,13 +31,20 @@ class Calculation:
 
     #TODO: Tutaj będa zmiany odnośnie parametrów _itemId, _item_sell_price, _connected_realm_id
     def calc(self, _itemId, _item_sell_price, _connected_realm_id):
-        realm_service = RealmService()
-        auction_service = AuctionService()
+        #realm_service = RealmService()
+        #auction_service = AuctionService()
 
-        realms = realm_service.getRealmNamesByConnectedRealmId(_connected_realm_id)
+        #realms = realm_service.getRealmNamesByConnectedRealmId(_connected_realm_id)
         item_pricelist = []
-        for realm in realms:
-            item_pricelist += auction_service.getRealmPriceList(_itemId, realm)
+        for auction in self.auctions:
+            # item_pricelist += auction_service.getRealmPriceList(_itemId, realm)
+            if auction.item == _itemId:
+                quantity = auction.quantity
+                price = Utils.unifyPrice(auction.buyout)/quantity
+                if price > 0:
+                    while quantity > 0:
+                        item_pricelist.append(price)
+                        quantity -= 1
         if len(item_pricelist) > 0:
             item_pricelist = sorted(item_pricelist)
             standard_deviation = self.calcStandardDeviation(item_pricelist)
@@ -80,7 +92,8 @@ class Calculation:
                 "quantity": len(item_pricelist),
                 "min_price": min_itemprice,
                 "max_price": max_itemprice,
-                "avg_price": self.calcAvgPrice(item_pricelist)
+                "avg_price": self.calcAvgPrice(item_pricelist),
+                "datetime": self.time
             }
         else:
             calculations = {
@@ -89,6 +102,7 @@ class Calculation:
                 "quantity": 0,
                 "min_price": 0,
                 "max_price": 0,
-                "avg_price": 0
+                "avg_price": 0,
+                "datetime": self.time
             }
         return calculations

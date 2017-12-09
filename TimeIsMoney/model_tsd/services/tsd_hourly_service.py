@@ -5,7 +5,7 @@ from ..models import ItemRealmTimeSeriesDataHourly
 class TSDHourlyService:
     def create(self, _item, _connected_realm, _data):
         tsd_hourly = ItemRealmTimeSeriesDataHourly()
-        tsd_hourly.datetime = datetime.datetime.now()
+        tsd_hourly.datetime = _data['datetime']
         tsd_hourly.item = _item
         tsd_hourly.connected_realm = _connected_realm
         tsd_hourly.market_price = _data['market_price']
@@ -16,7 +16,7 @@ class TSDHourlyService:
         return tsd_hourly
 
     def deleteOldTSD(self):
-        today =datetime.date.today()
+        today = datetime.date.today()
         from_date = datetime.date(2017,1,1)
         to_date = today - datetime.timedelta(days=14)
         tsd_set = ItemRealmTimeSeriesDataHourly.objects.filter(datetime__range=[from_date, to_date])

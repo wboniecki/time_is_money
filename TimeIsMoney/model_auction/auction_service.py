@@ -46,6 +46,9 @@ class AuctionService:
                     quantity -= 1
         return price_tab
 
+    def getAllRealmActiveAuctionsList(self, _realm_name):
+        return Auction.objects.filter(ownerRealm=_realm_name, isActive=1)
+
     def getCurrentAuctions(self, connected_realms):
         current_auctions = []
         current_auctions_auc = []

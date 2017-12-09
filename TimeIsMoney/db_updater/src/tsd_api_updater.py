@@ -1,6 +1,7 @@
 import logging
 from labels import labels
 from django.db import transaction
+from model_auction.auction_service import AuctionService
 from model_realm.services import RealmService, ConnectedRealmService
 from model_item.item_service import ItemService
 from model_tsd.calculation import Calculation
@@ -25,7 +26,7 @@ class TsdAPIUpdater:
         realm_service = RealmService()
         connected_realm_service = ConnectedRealmService()
         item_service = ItemService()
-        calculation = Calculation()
+        auction_service = AuctionService()
         tsd_daily_service = TSDDailyService()
         tsd_hourly_service = TSDHourlyService()
 
@@ -36,26 +37,32 @@ class TsdAPIUpdater:
         tsd_hourly_objects = []
         tsd_daily_objects = []
         for connected_realms_id in connected_realms_tab:
-            counter = 0
-            log.debug(label['@DBU39'] % str(connected_realms_id))
-            for item in item_list:
-                item_vendor_sellprice = Utils.unifyPrice(item.sellPrice)
-                connected_realm = connected_realm_service.getConnectedRealm(connected_realms_id)
-                calc = calculation.calc(item.itemId, item_vendor_sellprice, connected_realms_id)
-                tsd_hourly = tsd_hourly_service.create(item, connected_realm, calc)
-                tsd_hourly_objects.append(tsd_hourly)
-                tsd_daily_objects.append(tsd_daily_service.createOrUpdate(item, connected_realm, calc))
-                if counter > 1000:
-                    counter = 0
-                    self.commit_tsd_objects(tsd_hourly_objects)
-                    tsd_hourly_objects = []
-                    self.commit_tsd_objects(tsd_daily_objects)
-                    tsd_daily_objects = []
-                counter += 1
-                total += 1
-                log.debug("[%s]: %s" % (str(connected_realms_id), str(total)))
-            self.commit_tsd_objects(tsd_hourly_objects)
-            self.commit_tsd_objects(tsd_daily_objects)
+            realms = realm_service.getRealmNamesByConnectedRealmId(connected_realms_id)
+            auctions = []
+            for realm in realms:
+                auctions += auction_service.getAllRealmActiveAuctionsList(realm)
+            if len(auctions) > 0:
+                calculation = Calculation(auctions)
+                counter = 0
+                log.debug(label['@DBU39'] % str(connected_realms_id))
+                for item in item_list:
+                    item_vendor_sellprice = Utils.unifyPrice(item.sellPrice)
+                    connected_realm = connected_realm_service.getConnectedRealm(connected_realms_id)
+                    calc = calculation.calc(item.itemId, item_vendor_sellprice, connected_realms_id)
+                    tsd_hourly = tsd_hourly_service.create(item, connected_realm, calc)
+                    tsd_hourly_objects.append(tsd_hourly)
+                    tsd_daily_objects.append(tsd_daily_service.createOrUpdate(item, connected_realm, calc))
+                    if counter > 1000:
+                        counter = 0
+                        self.commit_tsd_objects(tsd_hourly_objects)
+                        tsd_hourly_objects = []
+                        self.commit_tsd_objects(tsd_daily_objects)
+                        tsd_daily_objects = []
+                    counter += 1
+                    total += 1
+                    log.debug("[%s]: %s" % (str(connected_realms_id), str(total)))
+                self.commit_tsd_objects(tsd_hourly_objects)
+                self.commit_tsd_objects(tsd_daily_objects)
             log.debug(label['@DBU40'] % str(connected_realms_id))
         log.debug(label['@DBU38'] % ('TSD HOURLY', str(counter)))
         log.debug(label['@DBU2'])

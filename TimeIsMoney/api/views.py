@@ -34,7 +34,7 @@ def realm_list(request, format=None):
         serializer = RealmSerializer(realms, many=True)
         # TEST PURPOSES ONLY
         #print(utils.unifyPrice("0"))
-        calc = Calculation()
+        #calc = Calculation()
         tsdh = TSDHourlyService()
         #calc.calc(114821, "Doomhammer")
         #deleteOldAuctions('eu')
