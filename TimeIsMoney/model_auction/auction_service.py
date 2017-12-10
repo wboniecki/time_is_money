@@ -20,6 +20,7 @@ class AuctionService:
     def deleteOldAuctions(self):
         cursor = connection.cursor()
         cursor.execute("DELETE FROM %s WHERE `isActive`=0" % Auction._meta.db_table)
+        # TODO: ADD OPTIMIZE TABLE EXECUTE
 
     def getActiveAuctions(self, connected_realms):
         current_auctions = []
@@ -77,10 +78,6 @@ class AuctionService:
                                          auc=_auc['auc']).first()
         if auction:
             if str(auction.bid) != str(_auc['bid']) or str(auction.buyout) != str(_auc['buyout']) or str(auction.quantity) != str(_auc['quantity']) or str(auction.timeLeft) != str(_auc['timeLeft']):
-                # print('bid: '+ str(auction.bid)+' '+str(_auc['bid']))
-                # print('bid: ' + str(auction.buyout) + ' ' + str(_auc['buyout']))
-                # print('bid: ' + str(auction.quantity) + ' ' + str(_auc['quantity']))
-                # print('bid: ' + str(auction.timeLeft) + ' ' + _auc['timeLeft'])
                 auction.bid = _auc['bid']
                 auction.buyout = _auc['buyout']
                 auction.quantity = _auc['quantity']

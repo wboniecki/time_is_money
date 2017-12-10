@@ -30,7 +30,7 @@ class Calculation:
         #print(_set)
         return self.calcAvgPrice(market_price_set)
 
-    #TODO: Jeśli działa wywal _connected_realm_id z param.
+    #TODO: Jeśli działa wywal _connected_realm_id z param.`
     def calc(self, _itemId, _item_sell_price, _connected_realm_id):
         #realm_service = RealmService()
         #auction_service = AuctionService()
