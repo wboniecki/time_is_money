@@ -68,11 +68,21 @@ class RealmService:
     def getRealmByName(self, realm_name):
         return Realm.objects.filter(name=realm_name).first()
 
+    def getRealmBySlug(self, _realm_slug):
+        return Realm.objects.filter(slug=_realm_slug).first()
+
     def getRealmConnectedRealmId(self, realm_name):
         realm = Realm.objects.filter(name=realm_name).first()
         if realm:
             return realm.connected_realm
         return None
+
+    def getRealmNamesAndSlugsByConnectedRealmId(self, _id):
+        realms = Realm.objects.filter(connected_realm=_id)
+        realm_list = []
+        for realm in realms:
+            realm_list.append([realm.name, realm.slug])
+        return realm_list
 
     def getRealmNamesByConnectedRealmId(self, _id):
         realm_names = []

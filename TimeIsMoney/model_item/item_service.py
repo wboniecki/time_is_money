@@ -5,10 +5,7 @@ from .models import Item
 class ItemService:
 
     def getItemByItemId(self, _itemId):
-        item = Item.objects.filter(itemId=_itemId).first()
-        if item:
-            return item
-        return False
+        return Item.objects.filter(itemId=_itemId).first()
 
     def getItemList(self):
         items = Item.objects.all()

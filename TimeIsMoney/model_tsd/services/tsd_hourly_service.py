@@ -28,3 +28,6 @@ class TSDHourlyService:
 
     def getRealmDailyData(self, _item_id, _connected_realm_id, _date):
         return ItemRealmTimeSeriesDataHourly.objects.filter(datetime__date=_date, item=_item_id, connected_realm=_connected_realm_id)
+
+    def getRealmItemLastData(self, _item_id, _connected_realm_id):
+        return ItemRealmTimeSeriesDataHourly.objects.filter(item=_item_id, connected_realm=_connected_realm_id).order_by('-datetime').first()
