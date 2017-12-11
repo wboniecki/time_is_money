@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>[{{ item.name }}] - {{ realm.name }} - #TIMEISMONEY</title>
+  {% include "web_app/headers.html" %}
+</head>
+<body>
+{% include "web_app/top.html" %}
+<div class="item-name with-underline">
+  [<a href="http://wowhead.com/item={{ item.itemId }}">{{ item.name }}</a>]
+</div>
+<div class="pure-g">
+  <div class="pure-u-1 pure-u-md-1-4 item-info-box">
+    <div class="item-info">
+      Available quantity: {{ tsd.quantity }}
+      Market price: {{ tsd.market_price }}
+    </div>
+  </div>
+  <div class="pure-u-1 pure-u-md-3-4">
+  </div>
+</div>
+{{ realm.name }}
+{{ realm.dateModified }}
+
+
+{{ item.sellPrice }}
+</body>
+</html>

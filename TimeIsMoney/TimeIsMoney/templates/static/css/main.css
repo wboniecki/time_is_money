@@ -1,0 +1,49 @@
+body {
+  background-color: #242424;
+  color: #FFFFFF;
+}
+
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+.item-info {
+  background-color: #181818;
+  padding: 5px 15px;
+  border-radius: 5px;
+}
+
+.item-info-box {
+  padding: 10px 50px
+}
+
+.item-name {
+  padding: 15px 50px;
+  font-family: 'Lato', sans-serif;
+  font-size: 37px;
+}
+
+.realm-details {
+  font-family: 'Lato', sans-serif;
+  padding: 2px 25px;
+  font-size: 18px;
+}
+
+.realm-name {
+  font-family: 'Lato', sans-serif;
+  font-size: 37px;
+  font-weight: 200;
+  padding: 25px 25px;
+}
+
+.title {
+  font-family: 'Lato', sans-serif;
+  font-size: 75px;
+  font-weight: bold;
+  padding: 25px 25px;
+}
+
+.with-underline:hover {
+  text-decoration: underline;
+}
