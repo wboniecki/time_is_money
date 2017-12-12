@@ -18,8 +18,9 @@ def item_details_view(request, realm_slug, item_id):
     tsd = tsd_service.getRealmItemLastData(item.id, realm.connected_realm)
     print(settings.STATIC_URL)
     print(tsd.market_price)
-    print(realm.dateModified)
-    print(item)
+    print(realm.connected_realm.id)
+    print(item.id)
+    # TODO: dodaj walidacje na istnienie TSD (najlepiej juz w templatce)
     if realm and realm.isActive and item:
         connected_realms = realm_service.getRealmNamesAndSlugsByConnectedRealmId(realm.connected_realm)
         return render(request, 'web_app/item_details.html',

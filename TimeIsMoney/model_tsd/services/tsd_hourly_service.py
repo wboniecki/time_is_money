@@ -18,7 +18,7 @@ class TSDHourlyService:
     def deleteOldTSD(self):
         today = datetime.date.today()
         from_date = datetime.date(2017,1,1)
-        to_date = today - datetime.timedelta(days=14)
+        to_date = today - datetime.timedelta(days=16)
         tsd_set = ItemRealmTimeSeriesDataHourly.objects.filter(datetime__range=[from_date, to_date])
         counter = 0
         for tsd in tsd_set:
@@ -28,6 +28,13 @@ class TSDHourlyService:
 
     def getRealmDailyData(self, _item_id, _connected_realm_id, _date):
         return ItemRealmTimeSeriesDataHourly.objects.filter(datetime__date=_date, item=_item_id, connected_realm=_connected_realm_id)
+
+    def getRealmItemChartData(self, _item_id, _connected_realm_id):
+        today = datetime.datetime.now()
+        from_date = today - datetime.timedelta(days=14)
+        tsd_list = ItemRealmTimeSeriesDataHourly.objects.filter(datetime__range=[from_date, today], item=_item_id, connected_realm=_connected_realm_id).order_by('datetime')
+        return tsd_list
+
 
     def getRealmItemLastData(self, _item_id, _connected_realm_id):
         return ItemRealmTimeSeriesDataHourly.objects.filter(item=_item_id, connected_realm=_connected_realm_id).order_by('-datetime').first()

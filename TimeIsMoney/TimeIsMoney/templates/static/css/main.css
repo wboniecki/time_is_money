@@ -8,14 +8,56 @@ a:link, a:visited, a:hover, a:active {
     color: inherit;
 }
 
+.item-details {
+}
+
 .item-info {
   background-color: #181818;
   padding: 5px 15px;
   border-radius: 5px;
+  width: 100%;
+}
+
+.item-info table {
+  padding: 15px 5px;
+  width: inherit;
+}
+
+.item-info td {
+  padding: 5px;
 }
 
 .item-info-box {
   padding: 10px 50px
+}
+
+.item-img {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+}
+
+/*
+.item-img:hover {
+  width: inherit;
+  height: inherit;
+  -webkit-box-shadow: inset 0px 0px 20px rgba(173,40,173,0.7);
+  -moz-box-shadow: inset 0px 0px 20px rgba(173,40,173,0.7);
+  box-shadow: inset 0px 0px 20px rgba(173,40,173,0.7);
+}
+*/
+
+.item-img img {
+  position: relative;
+  border-radius: 5px;
+  padding:1px;
+  border:1px solid #b4b6b9;
+  background-color:#181818;
+  cursor: pointer;
+  transition: 0.3s;
+  z-index: -1;
+  width: 56px;
+  height: 56px;
 }
 
 .item-name {
