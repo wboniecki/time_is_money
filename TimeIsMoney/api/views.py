@@ -17,6 +17,7 @@ from db_updater.src.service_manager import updateAllAuctions, deleteOldAuctions,
 from db_updater.src.service_manager import createOrUpdateItems
 from model_tsd.calculation import Calculation
 from model_tsd.services.tsd_hourly_service import TSDHourlyService
+from model_tsd.test_calculation import calc_test
 import logging
 import datetime
 
@@ -57,6 +58,7 @@ def realm_list(request, format=None):
         #updateAllAuctions('eu')
         #updateConnectedRealm('eu')
         #createOrUpdateRealms('eu')
+        calc_test()
         return Response(serializer.data)
 
 @api_view(['GET'])

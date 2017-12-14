@@ -27,7 +27,6 @@ class Calculation:
         for price in _set:
             if price >= _minPrice and price <= _maxPrice:
                 market_price_set.append(price)
-        #print(_set)
         return self.calcAvgPrice(market_price_set)
 
     #TODO: Jeśli działa wywal _connected_realm_id z param.`
@@ -79,9 +78,9 @@ class Calculation:
                             counter += 1
                 else:
                     break
-
             min_itemprice = item_pricelist[0]
             max_itemprice = item_pricelist[len(item_pricelist)-1]
+            avg_price = self.calcAvgPrice(item_pricelist)
             avg = self.calcAvgPrice(need_set)
             mp_standard_deviation = self.calcStandardDeviation(need_set)
             max_price = round(avg+mp_standard_deviation, 4)
@@ -92,12 +91,12 @@ class Calculation:
             if avg == 0:
                 market_price = _item_sell_price
             calculations = {
-                "market_price": market_price,
-                "standard_deviation": standard_deviation,
+                "market_price": format(market_price, '.4f'),
+                "standard_deviation": format(standard_deviation, '.4f'),
                 "quantity": len(item_pricelist),
-                "min_price": min_itemprice,
-                "max_price": max_itemprice,
-                "avg_price": self.calcAvgPrice(item_pricelist),
+                "min_price": format(min_itemprice, '.4f'),
+                "max_price": format(max_itemprice, '.4f'),
+                "avg_price": format(avg_price, '.4f'),
                 "datetime": self.time
             }
         else:
