@@ -21,6 +21,6 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include("api.urls", namespace='api')),
-    url(r'', include("web_app.urls", namespace='web-app'))
+    #url(r'', include("web_app.urls", namespace='web-app'))
     #url(r'^updater/', include("updater.urls", namespace='updater')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

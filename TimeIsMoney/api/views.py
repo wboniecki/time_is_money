@@ -58,7 +58,7 @@ def realm_list(request, format=None):
         #updateAllAuctions('eu')
         #updateConnectedRealm('eu')
         #createOrUpdateRealms('eu')
-        calc_test()
+        #calc_test()
         return Response(serializer.data)
 
 @api_view(['GET'])

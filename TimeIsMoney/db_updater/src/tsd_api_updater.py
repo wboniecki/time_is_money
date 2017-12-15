@@ -1,4 +1,5 @@
 import logging
+import multiprocessing
 from labels import labels
 from django.db import transaction
 from model_auction.auction_service import AuctionService
@@ -27,15 +28,16 @@ class TsdAPIUpdater:
         connected_realm_service = ConnectedRealmService()
         item_service = ItemService()
         auction_service = AuctionService()
-        tsd_daily_service = TSDDailyService()
-        tsd_hourly_service = TSDHourlyService()
 
         connected_realms_tab = realm_service.getActiveRealmsConnectedRealmId()
         # Get itemId price list map
         item_list = item_service.getAllItems()
+        # IMPORTANT! BELOW SET MAX ALLOW AMOUT OF PROCCESS (depending on CPU cores)
+        max_proc = 1
+        item_proc_list = [[] for _ in range(max_proc)]
+        for i, item in enumerate(item_list):
+            item_proc_list[i % max_proc].append(item)
         total = 0
-        tsd_hourly_objects = []
-        tsd_daily_objects = []
         for connected_realms_id in connected_realms_tab:
             realms = realm_service.getRealmNamesByConnectedRealmId(connected_realms_id)
             auctions = []
@@ -43,30 +45,42 @@ class TsdAPIUpdater:
                 auctions += auction_service.getAllRealmActiveAuctionsList(realm)
             if len(auctions) > 0:
                 calculation = Calculation(auctions)
-                counter = 0
                 log.debug(label['@DBU39'] % str(connected_realms_id))
-                for item in item_list:
-                    item_vendor_sellprice = Utils.unifyPrice(item.sellPrice)
-                    connected_realm = connected_realm_service.getConnectedRealm(connected_realms_id)
-                    calc = calculation.calc(item.itemId, item_vendor_sellprice, connected_realms_id)
-                    tsd_hourly = tsd_hourly_service.create(item, connected_realm, calc)
-                    tsd_hourly_objects.append(tsd_hourly)
-                    tsd_daily_objects.append(tsd_daily_service.createOrUpdate(item, connected_realm, calc))
-                    if counter > 1000:
-                        counter = 0
-                        self.commit_tsd_objects(tsd_hourly_objects)
-                        tsd_hourly_objects = []
-                        self.commit_tsd_objects(tsd_daily_objects)
-                        tsd_daily_objects = []
-                    counter += 1
-                    total += 1
-                    #log.debug("[%s]: %s" % (str(connected_realms_id), str(total)))
-                self.commit_tsd_objects(tsd_hourly_objects)
-                self.commit_tsd_objects(tsd_daily_objects)
+                log.debug(label['@DBU41'] % str(len(auctions)))
+                connected_realm = connected_realm_service.getConnectedRealm(connected_realms_id)
+                calculations = [multiprocessing.Process(target=self.procCalculation, args=(item_sublist, calculation, connected_realm)) for item_sublist in item_proc_list]
+                for p in calculations:
+                    p.start()
+                for p in calculations:
+                    p.join()
+            else:
+                log.warning(label['@DBU41'] % str(len(auctions)))
             log.debug(label['@DBU40'] % str(connected_realms_id))
+            total += len(item_list)
         log.debug(label['@DBU38'] % ('TSD HOURLY', str(total)))
         log.debug(label['@DBU2'])
 
+    def procCalculation(self, items, calculation, connected_realm):
+        tsd_daily_service = TSDDailyService()
+        tsd_hourly_service = TSDHourlyService()
+        counter = 0
+        tsd_hourly_objects = []
+        tsd_daily_objects = []
+        for item in items:
+            item_vendor_sellprice = Utils.unifyPrice(item.sellPrice)
+            calc = calculation.calc(item.itemId, item_vendor_sellprice)
+            tsd_hourly = tsd_hourly_service.create(item, connected_realm, calc)
+            tsd_hourly_objects.append(tsd_hourly)
+            tsd_daily_objects.append(tsd_daily_service.createOrUpdate(item, connected_realm, calc))
+            if counter > 1000:
+                counter = 0
+                self.commit_tsd_objects(tsd_hourly_objects)
+                tsd_hourly_objects = []
+                self.commit_tsd_objects(tsd_daily_objects)
+                tsd_daily_objects = []
+            counter += 1
+        self.commit_tsd_objects(tsd_hourly_objects)
+        self.commit_tsd_objects(tsd_daily_objects)
 
     def deleteOldTSD(self):
         log.debug(label['@DBU37'])

@@ -29,8 +29,7 @@ class Calculation:
                 market_price_set.append(price)
         return self.calcAvgPrice(market_price_set)
 
-    #TODO: Jeśli działa wywal _connected_realm_id z param.`
-    def calc(self, _itemId, _item_sell_price, _connected_realm_id):
+    def calc(self, _itemId, _item_sell_price):
         #realm_service = RealmService()
         #auction_service = AuctionService()
 
@@ -91,12 +90,12 @@ class Calculation:
             if avg == 0:
                 market_price = _item_sell_price
             calculations = {
-                "market_price": format(market_price, '.4f'),
-                "standard_deviation": format(standard_deviation, '.4f'),
+                "market_price": market_price,
+                "standard_deviation": standard_deviation,
                 "quantity": len(item_pricelist),
-                "min_price": format(min_itemprice, '.4f'),
-                "max_price": format(max_itemprice, '.4f'),
-                "avg_price": format(avg_price, '.4f'),
+                "min_price": min_itemprice,
+                "max_price": max_itemprice,
+                "avg_price": avg_price,
                 "datetime": self.time
             }
         else:
