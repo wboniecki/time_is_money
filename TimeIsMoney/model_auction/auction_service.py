@@ -20,7 +20,7 @@ class AuctionService:
     def deleteOldAuctions(self):
         cursor = connection.cursor()
         cursor.execute("DELETE FROM %s WHERE `isActive`=0" % Auction._meta.db_table)
-        # TODO: ADD OPTIMIZE TABLE EXECUTE
+        cursor.execute("OPTIMIZE TABLE %s" % Auction._meta.db_table)
 
     def getActiveAuctions(self, connected_realms):
         current_auctions = []

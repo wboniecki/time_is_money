@@ -86,7 +86,8 @@ class TsdAPIUpdater:
         log.debug(label['@DBU37'])
         log.debug(label['@DBU35'] % 'TSD Hourly')
         tsd_hourly_service = TSDHourlyService()
-        deleted = tsd_hourly_service.deleteOldTSD()
+        old_date = tsd_hourly_service.deleteOldTSD()
         log.info(label['@DBU36'] % 'TSD Hourly')
+        log.info(label['@DBU42'] % old_date)
 
 

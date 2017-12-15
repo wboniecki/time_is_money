@@ -41,6 +41,7 @@ DBU = {
     '@DBU38': '[%s] Inserted: %s',
     '@DBU39': 'Begin inserting TSD for %s',
     '@DBU40': 'End inserting TSD for %s',
-    '@DBU41': 'Active auctions: %s'
+    '@DBU41': 'Active auctions: %s',
+    '@DBU42': 'To date: %s'
 
 }
