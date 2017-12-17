@@ -1,4 +1,4 @@
-import datetime
+import datetime, decimal
 from ..models import ItemRealmTimeSeriesDataDaily
 from .tsd_hourly_service import TSDHourlyService
 from model_item.item_service import ItemService
@@ -26,6 +26,15 @@ class TSDDailyService:
             if tsd_hourly.quantity > 0:
                 avg_quantity_sum += tsd_hourly.quantity
                 tsd_len_quan += 1
+        if _data['market_price'] > 0:
+            avg_market_price_sum += decimal.Decimal(_data['market_price'])
+            tsd_len_mp += 1
+        if _data['avg_price'] > 0:
+            avg_price_sum += decimal.Decimal(_data['avg_price'])
+            tsd_len_avg += 1
+        if _data['quantity'] > 0:
+            avg_quantity_sum += _data['quantity']
+            tsd_len_quan += 1
 
         tsd = self._getTSDDaily(today, _item.id, _connected_realm.id)
         if not tsd:
