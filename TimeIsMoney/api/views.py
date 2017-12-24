@@ -5,7 +5,11 @@ from rest_framework.generics import UpdateAPIView
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from model_tsd.services.tsd_hourly_service import TSDHourlyService
-from model_tsd.serializer import TSDHourlyChartSerializer, SingleTSDHourlySerializer
+from model_tsd.serializer import (
+    TSDHourlyChartSerializer,
+    SingleTSDHourlySerializer,
+    TSDDailyChartSerializer,
+    TSDDailyDetailsChartSerializer)
 from model_item.item_service import ItemService
 from model_item.serializer import ItemDetailSerializer
 from model_realm.services.realm_service import RealmService
@@ -19,6 +23,7 @@ from db_updater.src.service_manager import updateAllAuctions, deleteOldAuctions,
 from db_updater.src.service_manager import createOrUpdateItems
 from model_tsd.calculation import Calculation
 from model_tsd.services.tsd_hourly_service import TSDHourlyService
+from model_tsd.services.tsd_daily_service import TSDDailyService
 from model_tsd.test_calculation import calc_test
 import logging
 import datetime
@@ -43,6 +48,34 @@ def tsd_hourly_realm_item_chart(request, itemId, realm_slug):
     if realm and item:
         tsd_list = tsd_service.getRealmItemChartData(item, realm.connected_realm)
         serializer = TSDHourlyChartSerializer(tsd_list, many=True)
+        return Response(serializer.data)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def tsd_daily_realm_time_chart(request, itemId, realm_slug):
+    item_service = ItemService()
+    realm_service = RealmService()
+    tsd_service = TSDDailyService()
+    realm = realm_service.getRealmBySlug(realm_slug)
+    item = item_service.getItemByItemId(itemId)
+    if realm and item:
+        tsd_list = tsd_service.getRealmItemChartData(item, realm.connected_realm)
+        serializer = TSDDailyChartSerializer(tsd_list, many=True)
+        return Response(serializer.data)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def tsd_daily_details_realm_time_chart(request, itemId, realm_slug):
+    item_service = ItemService()
+    realm_service = RealmService()
+    tsd_service = TSDDailyService()
+    realm = realm_service.getRealmBySlug(realm_slug)
+    item = item_service.getItemByItemId(itemId)
+    if realm and item:
+        tsd_list = tsd_service.getRealmItemChartData(item, realm.connected_realm)
+        serializer = TSDDailyDetailsChartSerializer(tsd_list, many=True)
         return Response(serializer.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)

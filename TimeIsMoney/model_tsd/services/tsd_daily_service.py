@@ -94,3 +94,9 @@ class TSDDailyService:
         if tsd:
             return tsd
         return False
+
+    def getRealmItemChartData(self, _item_id, _connected_realm_id):
+        today = datetime.date.today()
+        from_date = today - datetime.timedelta(days=365)
+        tsd_list = ItemRealmTimeSeriesDataDaily.objects.filter(date__range=[from_date, today], item=_item_id, connected_realm=_connected_realm_id)
+        return tsd_list
