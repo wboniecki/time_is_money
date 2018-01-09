@@ -19,12 +19,11 @@ from .serializers import RealmSerializer
 from model_realm.serializer import RealmDetailSerializer, RealmsInConnectedRealmSerializer
 
 from db_updater.src.service_manager import createOrUpdateRealms
-from db_updater.src.service_manager import updateAllAuctions, deleteOldAuctions, tsdUpdater, tsdDeleteOld
+from db_updater.src.service_manager import updateAllAuctions, deleteOldAuctions, tsdDailyUpdater, tsdHourlyUpdater, tsdDeleteOld
 from db_updater.src.service_manager import createOrUpdateItems
 from model_tsd.calculation import Calculation
 from model_tsd.services.tsd_hourly_service import TSDHourlyService
 from model_tsd.services.tsd_daily_service import TSDDailyService
-from model_tsd.test_calculation import calc_test
 import logging
 import datetime
 
@@ -101,7 +100,8 @@ def realm_list(request, format=None):
         serializer = RealmSerializer(realms, many=True)
         # TEST PURPOSES ONLY
         #deleteOldAuctions('eu')
-        #tsdUpdater()
+        #tsdDailyUpdater()
+        #tsdHourlyUpdater()
         #tsdDeleteOld()
         #createOrUpdateItems('eu')
         #updateAllAuctions('eu')

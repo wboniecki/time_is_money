@@ -49,6 +49,10 @@ class ItemRealmTimeSeriesDataHourly(models.Model):
     quantity = models.IntegerField(default=0)
     # standard deviation
     standard_deviation = models.DecimalField(max_digits=13, decimal_places=4, default=0)
+    # min price
+    min_price = models.DecimalField(max_digits=13, decimal_places=4, default=0)
+    # max pirce
+    max_price = models.DecimalField(max_digits=13, decimal_places=4, default=0)
 
     class Meta:
         db_table = 'item_realm_tsd_hourly'

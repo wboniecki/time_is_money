@@ -12,15 +12,15 @@ class Calculation:
 
     def calcAvgPrice(self, _set):
         if len(_set) > 0:
-            return round(sum(_set)/len(_set), 4)
+            return sum(_set)/len(_set)
         return 0
 
     def calcStandardDeviation(self, _set):
         avg = self.calcAvgPrice(_set)
         sub_avg_pow_set = []
         for item in _set:
-            sub_avg_pow_set.append(round(pow((item-avg),2),4))
-        return round(math.sqrt(self.calcAvgPrice(sub_avg_pow_set)), 4)
+            sub_avg_pow_set.append(pow((item-avg),2))
+        return math.sqrt(self.calcAvgPrice(sub_avg_pow_set))
 
     def calcMarketPrice(self, _set, _minPrice, _maxPrice):
         market_price_set = []
@@ -82,20 +82,20 @@ class Calculation:
             avg_price = self.calcAvgPrice(item_pricelist)
             avg = self.calcAvgPrice(need_set)
             mp_standard_deviation = self.calcStandardDeviation(need_set)
-            max_price = round(avg+mp_standard_deviation, 4)
-            min_price = round(avg-mp_standard_deviation, 4)
+            max_price = avg+mp_standard_deviation
+            min_price = avg-mp_standard_deviation
             market_price = self.calcMarketPrice(need_set, min_price, max_price)
             if avg > 0 and market_price == 0:
                 market_price = avg
             if avg == 0:
                 market_price = _item_sell_price
             calculations = {
-                "market_price": market_price,
-                "standard_deviation": standard_deviation,
+                "market_price": round(market_price, 4),
+                "standard_deviation": round(standard_deviation, 4),
                 "quantity": len(item_pricelist),
-                "min_price": min_itemprice,
-                "max_price": max_itemprice,
-                "avg_price": avg_price,
+                "min_price": round(min_itemprice, 4),
+                "max_price": round(max_itemprice, 4),
+                "avg_price": round(avg_price, 4),
                 "datetime": self.time
             }
         else:

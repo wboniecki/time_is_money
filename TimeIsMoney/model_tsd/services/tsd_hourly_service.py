@@ -1,6 +1,7 @@
 import datetime
 from ..models import ItemRealmTimeSeriesDataHourly
 from django.db import connection
+from contextlib import closing
 
 
 class TSDHourlyService:
@@ -16,6 +17,26 @@ class TSDHourlyService:
         #tsd_hourly.save()
         return tsd_hourly
 
+    def batchInsert(self, _data, _connected_realm_id):
+        pre_sql = 'INSERT INTO %s (datetime, market_price, avg_price, quantity, standard_deviation, connected_realm_id, item_id, max_price, min_price) VALUES {}' % ItemRealmTimeSeriesDataHourly._meta.db_table
+        sql = pre_sql.format(
+            ', '.join(['(%s, %s, %s, %s, %s, %s, %s, %s, %s)'] * len(_data))
+        )
+        params = []
+        for each in _data:
+            params.extend([each[1]['datetime'],
+                           each[1]['market_price'],
+                           each[1]['avg_price'],
+                           each[1]['quantity'],
+                           each[1]['standard_deviation'],
+                           _connected_realm_id,
+                           each[0].id,
+                           each[1]['max_price'],
+                           each[1]['min_price']])
+        with closing(connection.cursor()) as cursor:
+            cursor.execute(sql, params)
+
+
     def deleteOldTSD(self):
         today = datetime.date.today()
         to_date = today - datetime.timedelta(days=15)
@@ -26,6 +47,9 @@ class TSDHourlyService:
 
     def getRealmDailyData(self, _item_id, _connected_realm_id, _date):
         return ItemRealmTimeSeriesDataHourly.objects.filter(datetime__date=_date, item=_item_id, connected_realm=_connected_realm_id)
+
+    def getRealmAllDailyData(self, _connected_realm_id, _date):
+        return ItemRealmTimeSeriesDataHourly.objects.filter(datetime__date=_date, connected_realm=_connected_realm_id)
 
     def getRealmItemChartData(self, _item_id, _connected_realm_id):
         today = datetime.datetime.now()

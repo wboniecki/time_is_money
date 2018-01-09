@@ -15,8 +15,11 @@ def updateAllAuctions(region):
 def createOrUpdateItems(region):
     ItemAPIUpdater(region).main()
 
-def tsdUpdater():
-    TsdAPIUpdater().main()
+def tsdDailyUpdater():
+    TsdAPIUpdater().dailyMain()
+
+def tsdHourlyUpdater():
+    TsdAPIUpdater().hourlyMain()
 
 def tsdDeleteOld():
     TsdAPIUpdater().deleteOldTSD()
