@@ -65,6 +65,9 @@ class RealmService:
 
         return realm_table
 
+    def getActiveRealms(self):
+        return Realm.objects.filter(isActive=1)
+
     def getRealmByName(self, realm_name):
         return Realm.objects.filter(name=realm_name).first()
 

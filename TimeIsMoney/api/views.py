@@ -13,6 +13,7 @@ from model_tsd.serializer import (
 from model_item.item_service import ItemService
 from model_item.serializer import ItemDetailSerializer
 from model_realm.services.realm_service import RealmService
+from model_auction.auction_service import AuctionService
 
 from model_realm.models import Realm
 from .serializers import RealmSerializer
@@ -111,11 +112,39 @@ def realm_list(request, format=None):
         return Response(serializer.data)
 
 @api_view(['GET'])
+def active_realm_list(request):
+    realm_service = RealmService()
+    realms = realm_service.getActiveRealms()
+    if realms:
+        serializer = RealmsInConnectedRealmSerializer(realms, many=True)
+        return Response(serializer.data)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def realm_active_auction_count(request, realm_slug):
+    realm_service = RealmService()
+    auction_service = AuctionService()
+    realm = realm_service.getRealmBySlug(realm_slug)
+    connected_realms = realm_service.getRealmNamesAndSlugsByConnectedRealmId(realm.connected_realm)
+    return Response(auction_service.getConnectedRealmActiveAucCount(connected_realms))
+
+@api_view(['GET'])
 def item_detail(request, itemId):
     item_service = ItemService()
     item = item_service.getItemByItemId(itemId)
     if item:
         serializer = ItemDetailSerializer(item)
+        return Response(serializer.data)
+    else:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def item_list(request):
+    item_service = ItemService()
+    items = item_service.getAllItems()
+    if items:
+        serializer = ItemDetailSerializer(items, many=True)
         return Response(serializer.data)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)

@@ -22,6 +22,12 @@ class AuctionService:
         cursor.execute("DELETE FROM %s WHERE `isActive`=0" % Auction._meta.db_table)
         cursor.execute("OPTIMIZE TABLE %s" % Auction._meta.db_table)
 
+    def getConnectedRealmActiveAucCount(self, connected_realm):
+        count = 0
+        for realm in connected_realm:
+            count += Auction.objects.filter(ownerRealm=realm.name, isActive=1).count()
+        return count
+
     def getActiveAuctions(self, connected_realms):
         current_auctions = []
         current_auctions_auc = {}
